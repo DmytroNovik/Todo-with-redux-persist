@@ -1,0 +1,22 @@
+.todo-wrapper {
+    width: 45%;
+    padding: 0px 20px 0px 20px;
+    max-height: 700px;
+    margin: 20px 10px 20px 20px;
+}
+
+.add-todo-block {
+    display: flex;
+}
+
+.add-todo-block .add-todo-input {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.todo-list-item {
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0px;
+}

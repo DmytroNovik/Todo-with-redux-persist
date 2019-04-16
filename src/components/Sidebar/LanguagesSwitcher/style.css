@@ -1,0 +1,32 @@
+.lang-wrapper {
+    text-align: center;
+    position: relative;
+}
+
+.languages-block {
+    margin: 0 auto;
+    background-color: #a8783f;
+    padding: 10px 5px;
+    border-radius: 5px;
+    margin-top: 10px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 200px;
+}
+
+.lang-item {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.lang-item > div {
+    width: 33.33%;
+    text-align: left;
+}
+
+.lang-item-icon {
+    width: 20px;
+    height: 17px;
+}
