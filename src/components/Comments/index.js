@@ -16,16 +16,17 @@ class Comments extends Component {
 
     render() {
         const {comment} = this.state;
-        const {addComment, comments} = this.props;
+        const {addComment, todoList, activeTodo} = this.props;
+
         return (
             <Paper className='comments-wrapper'>
                 <h2>{this.context.t("Comments")} #2</h2>
                 <div className='comments-block'>
-                    {comments.map((item, index) =>
+                    {todoList.length > 0 && todoList[activeTodo] !== undefined && todoList[activeTodo].comments.map((item, index) =>
                         <span key={index}>
                             <div className='comments-item'>
                                 <img className='comments-item-img' alt='avatar' src={avatar}/>
-                                <p>{item.comment}</p>
+                                <p>{item}<span></span></p>
                             </div>
                             <Divider variant="middle"/>
                         </span>
@@ -48,7 +49,7 @@ class Comments extends Component {
                         variant="contained"
                         color="primary"
                         onClick={() => {
-                            addComment(comment)
+                            addComment(comment, activeTodo);
                             this.setState({comment: ""})
                         }}
                     >
@@ -70,15 +71,18 @@ Comments.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-    const {comments} = state;
-    return {comments: comments}
+    const {todos} = state;
+    return {
+        todoList: todos.todoList,
+        activeTodo: todos.activeTodo
+    }
 };
 
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addComment: (comment) => {
-            dispatch(addComment(comment))
+        addComment: (comment, id) => {
+            dispatch(addComment(comment, id))
         }
     }
 };

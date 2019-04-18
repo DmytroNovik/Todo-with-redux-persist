@@ -4,26 +4,27 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
-import {connect} from 'react-redux'
-import {addTodo, deleteTodo} from '../../actions'
+import Chip from '@material-ui/core/Chip';
+import {connect} from 'react-redux';
+import {addTodo, deleteTodo, setActiveTodo} from '../../actions';
 import PropTypes from "prop-types";
 
 class Todo extends Component {
     state = {
-        todoInputText: "",
+        todoInputText: ""
     };
 
-    addTodo = () => {
+    addTodo = (id) => {
         const {addTodo} = this.props;
         const {todoInputText} = this.state;
 
-        addTodo(todoInputText)
+        addTodo(todoInputText, id)
         this.setState({todoInputText: ""})
     };
 
     render() {
         const {todoInputText} = this.state;
-        const {todoList, deleteTodo} = this.props;
+        const {todoList = [], activeTodo, deleteTodo, setActiveTodo} = this.props;
 
         return (
             <Paper className='todo-wrapper'>
@@ -36,32 +37,42 @@ class Todo extends Component {
                         value={todoInputText}
                         onChange={(e) => this.setState({todoInputText: e.target.value})}
                         onKeyPress={(e) => e.key === 'Enter' && this.addTodo()}
-                />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={
-                        this.addTodo
-                    }>{this.context.t("Add new")}</Button>
-            </div>
-        <div className='todo-list'>
-            {todoList.map(item => (
-                <span key={item.id} className='todo-list-item'>
-                           <p>{item.text}</p>
-                           <Button
-                               variant='contained'
-                               color='secondary'
-                               onClick={() => deleteTodo(item.id)}
-                           >
-                               {this.context.t("Delete")}
-                           </Button>
-                       </span>
-            ))}
-        </div>
-    {todoList.length > 0 && <Divider/>}
-    </Paper>
-    )
-        ;
+                    />
+                    <Button
+                        className='add-todo-button'
+                        variant="contained"
+                        color="primary"
+                        onClick={
+                            this.addTodo
+                        }>{this.context.t("Add new")}</Button>
+                </div>
+                <div className='todo-list'>
+                    {todoList.map((item, index) => (
+                        <div className='todo-list-item' key={index}>
+                            <div
+                                onClick={() => setActiveTodo(index)}
+                                className={activeTodo === index ? ' active' : ''}
+                            >
+                                <div>{item.text} <Chip className='chip-count' color="primary"
+                                                       label={todoList[index].comments.length}/></div>
+                            </div>
+                            <Button
+                                variant="outlined"
+                                color='secondary'
+                                onClick={() => {
+                                    setActiveTodo(0)
+                                    deleteTodo(index)
+                                }}
+                            >
+                                {this.context.t("Delete")}
+                            </Button>
+                        </div>
+                    ))}
+                </div>
+                {todoList.length > 0 && <Divider/>}
+            </Paper>
+        )
+            ;
     }
 }
 
@@ -77,7 +88,10 @@ Todo.propTypes = {
 
 const mapStateToProps = (state) => {
     const {todos} = state;
-    return {todoList: todos}
+    return {
+        todoList: todos.todoList,
+        activeTodo: todos.activeTodo
+    }
 };
 
 
@@ -88,6 +102,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         deleteTodo: (id) => {
             dispatch(deleteTodo(id))
+        },
+        setActiveTodo: (id) => {
+            dispatch(setActiveTodo(id))
         }
     }
 };

@@ -10,25 +10,33 @@ import {translations} from "./static/dictionary"
 import {persistStore, persistReducer} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import {PersistGate} from 'redux-persist/integration/react'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import customTheme from './style/theme'
+
 
 const persistConfig = {
     key: 'root',
     storage,
-}
+};
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const theme = createMuiTheme(customTheme);
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = createStore(persistedReducer);
 
-let persistor = persistStore(store)
+let persistor = persistStore(store);
 
 render(
-    <Provider store={store}>
-        <I18n translations={translations} initialLang="en">
-            <PersistGate loading={null} persistor={persistor}>
-                <App/>
-            </PersistGate>
-        </I18n>
-    </Provider>,
+    <MuiThemeProvider theme={theme}>
+        <Provider store={store}>
+            <I18n translations={translations} initialLang="en">
+                <PersistGate loading={null} persistor={persistor}>
+                    <App/>
+                </PersistGate>
+            </I18n>
+        </Provider>
+    </MuiThemeProvider>,
     document.getElementById('root')
 );

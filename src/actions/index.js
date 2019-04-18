@@ -1,9 +1,5 @@
-let nextTodoId = 0;
-let nextCommentId = 0;
-
 export const addTodo = text => ({
     type: 'ADD_TODO',
-    id: text + nextTodoId++,
     text
 });
 
@@ -12,9 +8,13 @@ export const deleteTodo = id => ({
     id: id,
 });
 
-export const addComment = comment => ({
+export const addComment = (comment, activeTodo) => ({
     type: 'ADD_COMMENT',
-    id: nextCommentId++,
+    id: activeTodo,
     comment
 });
 
+export const setActiveTodo = id => ({
+    type: 'SET_ACTIVE_TODO',
+    id
+});
