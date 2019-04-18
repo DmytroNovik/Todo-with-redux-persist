@@ -13,9 +13,17 @@ class Todo extends Component {
         todoInputText: "",
     };
 
+    addTodo = () => {
+        const {addTodo} = this.props;
+        const {todoInputText} = this.state;
+
+        addTodo(todoInputText)
+        this.setState({todoInputText: ""})
+    };
+
     render() {
         const {todoInputText} = this.state;
-        const {todoList, addTodo, deleteTodo} = this.props;
+        const {todoList, deleteTodo} = this.props;
 
         return (
             <Paper className='todo-wrapper'>
@@ -27,18 +35,18 @@ class Todo extends Component {
                         variant="outlined"
                         value={todoInputText}
                         onChange={(e) => this.setState({todoInputText: e.target.value})}
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                            addTodo(todoInputText)
-                            this.setState({todoInputText: ""})
-                        }}>{this.context.t("Add new")}</Button>
-                </div>
-                <div className='todo-list'>
-                    {todoList.map(item => (
-                        <span key={item.id} className='todo-list-item'>
+                        onKeyPress={(e) => e.key === 'Enter' && this.addTodo()}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={
+                        this.addTodo
+                    }>{this.context.t("Add new")}</Button>
+            </div>
+        <div className='todo-list'>
+            {todoList.map(item => (
+                <span key={item.id} className='todo-list-item'>
                            <p>{item.text}</p>
                            <Button
                                variant='contained'
@@ -48,11 +56,12 @@ class Todo extends Component {
                                {this.context.t("Delete")}
                            </Button>
                        </span>
-                    ))}
-                </div>
-                {todoList.length > 0 && <Divider/>}
-            </Paper>
-        );
+            ))}
+        </div>
+    {todoList.length > 0 && <Divider/>}
+    </Paper>
+    )
+        ;
     }
 }
 
