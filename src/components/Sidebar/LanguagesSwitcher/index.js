@@ -22,7 +22,7 @@ class LanguagesSwitcher extends Component {
             },
             {
                 abr: 'RU',
-                icon: fr,
+                icon: ru,
                 name: 'Russian'
             },
             {
@@ -32,7 +32,7 @@ class LanguagesSwitcher extends Component {
             },
             {
                 abr: 'FR',
-                icon: ru,
+                icon: fr,
                 name: 'French'
             },
         ]
